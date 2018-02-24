@@ -6,6 +6,11 @@ What is unique about this bot is that it gives the user/streamer 100% control ov
 
 Queue Bot has room for improvement. One such improvement is that every time the user starts the application, the application requests permission to use their Twitch account information (subscriber data) instead of storing the authorization data. I plan on coming back to this project periodically to make improvements. If you have issues with it, you can contact me on [Twitter](twitter.com/sirskaro).
 
+![Start menu](https://i.imgur.com/hTAZxci.png)
+![Queue menu](https://i.imgur.com/dYvRXOc.png)
+
+(Note: sub only was turned off after start up)
+
 ## Features
 * Platform independent (runs on all OSes)
 * Interactive graphic user interface (GUI)
