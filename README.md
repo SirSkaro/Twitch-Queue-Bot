@@ -1,6 +1,6 @@
 # Twitch Queue Bot
 
-Twitch Queue Bot is an application that allows streamers to easily create custome queues for their Twitch channel. The application includes a GUI for ease of use, real-time control of the queue, subscriber-only features, and much more. See below for a larger list of features.
+Twitch Queue Bot is an application that allows streamers to easily create custom queues for their Twitch channel. The application includes a GUI for ease of use, real-time control of the queue, subscriber-only features, and much more. See below for a larger list of features.
 
 What is unique about this bot is that it gives the user/streamer 100% control over the bot while providing a real-time, intuitive, and compact interface. The application runs on the user's machine and uses credentials fed to it by the user. This means that the user must  register their own Twitch application (guide provided in the application interface), which grants them control over even the account the bot uses.
 
