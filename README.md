@@ -26,7 +26,7 @@ Queue Bot has room for improvement. One such improvement is that every time the 
 * Records the number of times a user has entered a queue (or disallows viewers from re-entering)
 * Runs on your machine so that you don't have to depend on someone's website
 
-## Getting Started
+## Getting Started/Download
 
 If you want to use the bot, you can download the latest version on [MediaFire](http://www.mediafire.com/file/pwh9m2g4d0rdqan/queue-bot-1.0.0.jar). Simply double click the .jar file, follow the instructions, and you're good to go.
 
@@ -34,9 +34,9 @@ If you want to develop your version of this bot, just download the repository an
 
 ### Prerequisites
 
-If you are trying to use the bot, make sure to have Java 8 installed on your machine. You may encounter problems if you only have Java 9.
+If you are trying to use the bot, make sure to have Java 8 or 9 installed on your machine.
 
-Same goes for developers. I'd all recommend having Scene Builder set up and installed.
+Same goes for developers. I'd also recommend having Scene Builder set up and installed.
 
 ## Releases
 
