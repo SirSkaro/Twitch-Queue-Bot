@@ -28,7 +28,7 @@ Queue Bot has room for improvement. One such improvement is that every time the 
 
 ## Getting Started
 
-If you want to use the bot, you can download the latest version on [MediaFire](http://www.mediafire.com/file/mzi3h7yd524xdvu/queue-bot-1.0.0.jar). Simply double click the .jar file, follow the instructions, and you're good to go.
+If you want to use the bot, you can download the latest version on [MediaFire](http://www.mediafire.com/file/pwh9m2g4d0rdqan/queue-bot-1.0.0.jar). Simply double click the .jar file, follow the instructions, and you're good to go.
 
 If you want to develop your version of this bot, just download the repository and set it up as a Maven project.
 
