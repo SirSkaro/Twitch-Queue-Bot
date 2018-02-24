@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="skaro.queue_bot.controller.StartMenuController">
+   <children>
+      <TextFlow fx:id="logoFlow" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0" />
+      <MenuBar layoutX="147.0" layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Accordion layoutX="199.0" layoutY="141.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <panes>
+          <TitledPane alignment="CENTER" animated="false" text="Welcome">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane layoutX="9.600000381469727" layoutY="9.600000381469727" prefHeight="297.6" prefWidth="598.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <TextFlow fx:id="welcomeFlow" prefHeight="299.0" prefWidth="598.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane alignment="CENTER" animated="false" text="Manual Configuration">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane layoutX="29.6" layoutY="265.6" prefHeight="44.0" prefWidth="559.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="245.0">
+                           <children>
+                            <Button fx:id="exportButton" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="298.0" layoutY="6.0" mnemonicParsing="false" onAction="#exportAction" prefHeight="26.0" prefWidth="117.0" text="Export to File" AnchorPane.bottomAnchor="10.0" />
+                            <Button fx:id="startConfManual" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="171.0" layoutY="6.0" mnemonicParsing="false" onAction="#startConfManualAction" prefHeight="26.0" prefWidth="117.0" text="Start" AnchorPane.bottomAnchor="10.0" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane layoutX="19.6" layoutY="19.6" minHeight="0.0" minWidth="0.0" prefHeight="253.0" prefWidth="579.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <ButtonBar layoutX="14.0" layoutY="212.0" prefHeight="66.0" prefWidth="539.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="200.0">
+                                 <buttons>
+                                    <ToggleButton fx:id="reentryButton" mnemonicParsing="false" onAction="#reentryAction" text="Allow Re-entry" />
+                                    <ToggleButton fx:id="priorityButton" layoutX="489.0" layoutY="19.0" mnemonicParsing="false" onAction="#priorityAction" text="Sub Priority" />
+                                    <ToggleButton fx:id="subOnlyButton" layoutX="479.0" layoutY="19.0" mnemonicParsing="false" onAction="#subOnlyAction" text="Sub Only" />
+                                    <ChoiceBox fx:id="queueCapBox" prefWidth="150.0" />
+                                 </buttons>
+                              </ButtonBar>
+                              <TextField fx:id="oauthField" layoutX="153.0" layoutY="16.0" onKeyTyped="#oauthAction" prefHeight="26.0" prefWidth="150.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="16.0" />
+                              <TextField fx:id="kwarg2" layoutX="153.0" layoutY="106.0" onKeyTyped="#kwarg2Action" prefHeight="26.0" prefWidth="150.0" AnchorPane.leftAnchor="150.0" />
+                              <TextField fx:id="kwarg1" layoutX="153.0" layoutY="76.0" onKeyTyped="#kwarg1Action" prefHeight="26.0" prefWidth="150.0" AnchorPane.leftAnchor="150.0" />
+                              <TextField fx:id="clientIDField" layoutX="150.0" layoutY="46.0" maxHeight="26.0" minHeight="25.0" onKeyTyped="#clientIDAction" prefHeight="26.0" prefWidth="150.0" AnchorPane.leftAnchor="150.0" />
+                              <Label layoutX="26.0" layoutY="36.0" text="Twitch OAuth Key:" underline="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+                              <Label layoutX="30.0" layoutY="63.0" text="Client ID:" underline="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0" />
+                              <Label layoutX="26.0" layoutY="88.0" text="Custom Argument 1:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="80.0" />
+                              <Label layoutX="26.0" layoutY="119.0" text="Custom Argument 2:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="110.0" />
+                              <AnchorPane layoutX="320.0" layoutY="101.0" prefHeight="86.0" prefWidth="254.0" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="101.0">
+                                 <children>
+                                    <ListView fx:id="chatPreview" layoutY="21.0" prefHeight="82.39999999999998" prefWidth="219.19999999999993" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <Label layoutX="20.0" layoutY="143.0" text="Comment Argument:" AnchorPane.topAnchor="140.0" />
+                              <CheckBox fx:id="commentKWArg" layoutX="150.0" layoutY="140.0" mnemonicParsing="false" onAction="#commentKWArgAction" AnchorPane.leftAnchor="150.0" />
+                              <ChoiceBox fx:id="prefixChoice" layoutX="148.0" layoutY="168.0" prefHeight="26.0" prefWidth="149.0" />
+                              <Label layoutX="20.0" layoutY="170.0" text="Prefix:" AnchorPane.topAnchor="170.0" />
+                              <TextField fx:id="clientSecretField" layoutX="389.0" layoutY="45.0" onKeyTyped="#clientSecretAction" prefHeight="26.0" prefWidth="149.0" AnchorPane.leftAnchor="389.0" AnchorPane.rightAnchor="20.0" />
+                              <Label layoutX="320.0" layoutY="49.0" text="ClientSecret:" underline="true" />
+                              <Label layoutX="376.0" layoutY="80.0" text="Twitch Chat Preview" />
+                              <TextField fx:id="channelField" layoutX="389.0" layoutY="15.0" onKeyTyped="#channelAction" prefHeight="26.0" prefWidth="149.0" AnchorPane.leftAnchor="389.0" AnchorPane.rightAnchor="20.0" />
+                              <Label layoutX="320.0" layoutY="19.0" text="Channel:" underline="true" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane alignment="CENTER" animated="false" contentDisplay="CENTER" text="Load Configuration File">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="chooseFileField" editable="false" layoutX="133.6" layoutY="135.0" prefHeight="26.0" prefWidth="445.0" AnchorPane.leftAnchor="124.0" AnchorPane.rightAnchor="20.0" />
+                        <Button fx:id="chooseFileButton" layoutX="43.0" layoutY="136.0" mnemonicParsing="false" onAction="#chooseFileAction" text="Choose File" AnchorPane.leftAnchor="20.0" />
+                        <Button fx:id="startConfImport" disable="true" layoutX="279.0" layoutY="193.0" mnemonicParsing="false" onAction="#startConfImportAction" text="Start" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="260.0" />
+                     </children></AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
+</AnchorPane>
