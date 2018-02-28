@@ -83,10 +83,10 @@ public class SessionState
 	
 	public void configure(ConfigurationState config)
 	{		
-		subOnly.set(config.isSubOnly());
-		allowReentry.set(config.isReentry());
-		subPriority.set(config.isSubPriority());
-		queueCap.set(config.getQueueCap());
+		setSubOnly(config.isSubOnly());
+		setAllowReentry(config.isReentry());
+		setSubPriority(config.isSubPriority());
+		setQueueCap(config.getQueueCap());
 		
 		kwargKey1 = config.getKwarg1();
 		kwargKey2 = config.getKwarg2();
