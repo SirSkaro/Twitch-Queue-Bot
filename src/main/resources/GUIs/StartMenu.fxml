@@ -92,7 +92,7 @@
                               <ChoiceBox fx:id="prefixChoice" layoutX="148.0" layoutY="168.0" prefHeight="26.0" prefWidth="149.0" />
                               <Label layoutX="20.0" layoutY="170.0" text="Prefix:" AnchorPane.topAnchor="170.0" />
                               <TextField fx:id="clientSecretField" layoutX="389.0" layoutY="45.0" onKeyTyped="#clientSecretAction" prefHeight="26.0" prefWidth="149.0" AnchorPane.leftAnchor="389.0" AnchorPane.rightAnchor="20.0" />
-                              <Label layoutX="320.0" layoutY="49.0" text="ClientSecret:" underline="true" />
+                              <Label layoutX="320.0" layoutY="49.0" text="Client Secret:" underline="true" />
                               <Label layoutX="376.0" layoutY="80.0" text="Twitch Chat Preview" />
                               <TextField fx:id="channelField" layoutX="389.0" layoutY="15.0" onKeyTyped="#channelAction" prefHeight="26.0" prefWidth="149.0" AnchorPane.leftAnchor="389.0" AnchorPane.rightAnchor="20.0" />
                               <Label layoutX="320.0" layoutY="19.0" text="Channel:" underline="true" />

@@ -171,7 +171,7 @@ public class ConfigurationState
 		Ini ini = new Ini(file);
 		
 		ini.put("TWITCH DATA", "oauth", oauth.get());
-		ini.put("TWITCH DATA", "channel", oauth.get());
+		ini.put("TWITCH DATA", "channel", channel.get());
 		ini.put("TWITCH DATA", "id", clientID.get());
 		ini.put("TWITCH DATA", "secret", clientSecret.get());
 		

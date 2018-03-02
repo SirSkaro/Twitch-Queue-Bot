@@ -1,17 +1,21 @@
 package skaro.queue_bot.controller;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -19,10 +23,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -31,9 +38,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import skaro.queue_bot.core.ConfigurationState;
 import skaro.queue_bot.twitch_tools.TwitchService;
-import javafx.stage.Stage;
 
 public class StartMenuController {
 
@@ -44,40 +51,16 @@ public class StartMenuController {
     private URL location;
 
     @FXML
-    private TextFlow logoFlow;
+    private TextFlow logoFlow, welcomeFlow;
 
     @FXML
-    private TextFlow welcomeFlow;
-
-    @FXML
-    private ToggleButton reentryButton;
-
-    @FXML
-    private ToggleButton priorityButton;
-
-    @FXML
-    private ToggleButton subOnlyButton;
+    private ToggleButton reentryButton, priorityButton, subOnlyButton;
 
     @FXML
     private ChoiceBox<Object> queueCapBox;
 
     @FXML
-    private TextField oauthField;
-    
-    @FXML
-    private TextField channelField;
-
-    @FXML
-    private TextField kwarg2;
-
-    @FXML
-    private TextField kwarg1;
-
-    @FXML
-    private TextField clientIDField;
-    
-    @FXML
-    private TextField clientSecretField;
+    private TextField oauthField, channelField, kwarg2, kwarg1, clientIDField, clientSecretField, chooseFileField;
 
     @FXML
     private ListView<String> chatPreview;
@@ -89,19 +72,7 @@ public class StartMenuController {
     private ChoiceBox<Character> prefixChoice;
 
     @FXML
-    private Button exportButton;
-
-    @FXML
-    private Button startConfManual;
-    
-    @FXML
-    private Button startConfImport;
-
-    @FXML
-    private TextField chooseFileField;
-
-    @FXML
-    private Button chooseFileButton;
+    private Button exportButton, startConfManual, startConfImport, chooseFileButton;
 
     @FXML
     void clientIDAction(KeyEvent event)
@@ -258,41 +229,10 @@ public class StartMenuController {
         chatPreview.setItems(config.getTwitchView());
         
         //Set up Welcome tab
-        welcomeFlow.setTextAlignment(TextAlignment.CENTER);
-        Text title = new Text("Weclome to Sir Skaro's Twitch Queue!\n\n");
-        title.setFont(new Font("Tahoma",30));
-        
-        Text bodyIntro = new Text("The Twitch Queue bot comes equiped with features to help streamers easily customize and manage a queue in their Twitch chat. "
-        		+ "Please read the following instructions to get started.\n\n");
-        bodyIntro.setFont(new Font("Tahoma",14));
-        
-        Text manualTitle = new Text("Manual Configuration\n");
-        manualTitle.setFont(Font.font("Tahoma", FontWeight.BOLD, 18));
-        
-        Text manualInfo = new Text(
-        		"1.) Register an application at https://twitchapps.com/tmi/ (set \"OAuth Redirect URI\" to \"http://127.0.0.1:7090/oauth_authorize_twitch\" "
-        		+ "and \"Application Category\" to \"Application Integration\"). Get the Client ID and Client Secret.\n\n"
-        		
-        		+ "2.) Create a new Twitch account - this will be your bot's account. Once created and signed in, go to https://twitchapps.com/tmi/ and create an OAuth Token. "
-        		+ "Get said OAuth Token. Sign back into your account if you wish.\n\n"
-        		
-        		+ "3.) Fill out the rest of the form and export your configuration file if you don't want to go through this process again. If you ever want to create a different "
-        		+ "configuration, you can reuse these tokens and do another manual configuration or edit the intuitive configuration file.\n\n"
-        		
-        		+ "4.) Upon start up, you will be prompted to give permissions to your application to view subscription data in your default web browser. "
-        		+ "If you do not grant permissions (or if you are not partnered), none of the subscriber features will work.\n\n");
-        manualInfo.setFont(new Font("Tahoma",14));
-        
-        Text loadTitle = new Text("Load Configuration\n");
-        loadTitle.setFont(Font.font("Tahoma", FontWeight.BOLD, 18));
-        
-        Text loadInfo = new Text("Select a configuration file and get started!");
-        loadInfo.setFont(new Font("Tahoma",14));
-        
-        welcomeFlow.getChildren().addAll(title, bodyIntro, manualTitle, manualInfo, loadTitle, loadInfo);
+        addTextToWelcomeTab();
         
         //Set up backdrop
-        
+        //someday...
     }
     
     /********* Private Methods *********/
@@ -412,4 +352,104 @@ public class StartMenuController {
 		
 		stage.setScene(scene);
 	}
+	
+	private Hyperlink createHyperlink(String url)
+	{
+		Hyperlink result = new Hyperlink();
+		result.setText(url);
+		result.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent e) 
+            {
+            	try {
+            	    Desktop.getDesktop().browse(new URL(url).toURI());
+            	} catch (Exception ex) {}
+            }
+        });
+        
+        return result;
+	}
+	
+	private Hyperlink createAutoCopyText(String text)
+	{
+		Hyperlink result = new Hyperlink();
+		result.setText(text);
+		result.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent e) 
+            {
+            	final Clipboard clipboard = Clipboard.getSystemClipboard();
+            	final ClipboardContent content = new ClipboardContent();
+            	content.putString(text);
+            	clipboard.setContent(content);
+            }
+        });
+        
+        return result;
+	}
+	
+	 private void addTextToWelcomeTab()
+    {
+		 welcomeFlow.setTextAlignment(TextAlignment.CENTER);
+        Text title = new Text("Weclome to Sir Skaro's Twitch Queue!\n\n");
+        title.setFont(new Font("Tahoma",30));
+        ArrayList<Node> manualInfo = new ArrayList<Node>();
+        
+        Text intro = new Text("The Twitch Queue bot comes equiped with features to help streamers easily customize and manage a queue in their Twitch chat. "
+        		+ "Please read the following instructions to get started.\n\n");
+        intro.setFont(new Font("Tahoma",14));
+        
+        Text manualTitle = new Text("Manual Configuration\n");
+        manualTitle.setFont(Font.font("Tahoma", FontWeight.BOLD, 18));
+        
+        Text manualStep1_1 = new Text("1.) Register an application at ");
+        Hyperlink step1_1Link = createHyperlink("https://dev.twitch.tv/");
+        Text manualStep1_2 = new Text(". Set \"OAuth Redirect URI\" to \"");
+        Hyperlink step1_2Link = createAutoCopyText("http://127.0.0.1:7090/oauth_authorize_twitch");
+        Text manualStep1_3 = new Text("\" (click link to copy to clipboard) and set \"Application Category\" to \"Application Integration\" (via dropdown menu). "
+        		+ "Get the Client ID and Client Secret.\n\n");
+        
+        manualInfo.add(manualStep1_1);
+        manualInfo.add(step1_1Link);
+        manualInfo.add(manualStep1_2);
+        manualInfo.add(step1_2Link);
+        manualInfo.add(manualStep1_3);
+        
+        Text manualStep2_1 = new Text("2.) Create a new Twitch account - this will be your bot's account. Once created and signed in, go to ");
+        Hyperlink step2Link = createHyperlink("https://twitchapps.com/tmi/");
+        Text manualStep2_2 = new Text(" and create an OAuth Token. Get said OAuth Token. Sign back into your account if you wish.\n\n");
+        manualInfo.add(manualStep2_1);
+        manualInfo.add(step2Link);
+        manualInfo.add(manualStep2_2);
+        
+        Text manualStep3 = new Text(
+        		"3.) Fill out the rest of the form and export your configuration file if you don't want to go through this process again. If you ever want to create a different "
+        		+ "configuration, you can reuse these tokens and do another manual configuration or edit the intuitive configuration file.\n\n");
+        manualInfo.add(manualStep3);
+        		
+        Text manualStep4 = new Text(
+        		"4.) Upon start up, you will be prompted to give permissions to your application to view subscription data in your default web browser. "
+        		+ "If you do not grant permissions (or if you are not partnered), none of the subscriber features will work.\n\n");
+        manualInfo.add(manualStep4);
+        
+        for(Node n : manualInfo)
+        {
+        	if(n instanceof Text)
+        		((Text)n).setFont(new Font("Tahoma",14));
+        	else
+        		((Hyperlink)n).setFont(new Font("Tahoma",14));
+        }
+        
+        Text loadTitle = new Text("Load Configuration\n");
+        loadTitle.setFont(Font.font("Tahoma", FontWeight.BOLD, 18));
+        
+        Text loadInfo = new Text("Select a configuration file and get started!");
+        loadInfo.setFont(new Font("Tahoma",14));
+        
+        welcomeFlow.getChildren().addAll(title, intro, manualTitle); 
+        welcomeFlow.getChildren().addAll(manualInfo);
+        welcomeFlow.getChildren().addAll(loadTitle, loadInfo);
+    }
 }
