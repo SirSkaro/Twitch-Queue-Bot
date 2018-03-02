@@ -1,10 +1,8 @@
 # Twitch Queue Bot
 
-Twitch Queue Bot is an application that allows streamers to easily create custom queues for their Twitch channel. The application includes a GUI for ease of use, real-time control of the queue, subscriber-only features, and much more. See below for a larger list of features.
+Twitch Queue Bot is an application that allows streamers to easily create and manage custom queues for their Twitch channel. The application includes a Graphical User Interface for ease of use, real-time control of the queue, subscriber features, and more. See below for a larger list of features.
 
-What is unique about this bot is that it gives the user/streamer 100% control over the bot while providing a real-time, intuitive, and compact interface. The application runs on the user's machine and uses credentials fed to it by the user. This means that the user must  register their own Twitch application (guide provided in the application interface), which grants them control over even the account the bot uses.
-
-Queue Bot has room for improvement. One such improvement is that every time the user starts the application, the application requests permission to use their Twitch account information (subscriber data) instead of storing the authorization data. I plan on coming back to this project periodically to make improvements. If you have issues with it, you can contact me on [Twitter](twitter.com/sirskaro).
+Twitch Queue Bot grants the streamer complete control over their chat bot, from choosing the bot's account name to storing sensitive credentials. It provides a real-time, intuitive, and compact management interface so that the streamer can effortlessly interact with their audience without missing a beat.
 
 ![Start menu](https://i.imgur.com/hTAZxci.png)
 ![Queue menu](https://i.imgur.com/dYvRXOc.png)
@@ -26,10 +24,35 @@ Queue Bot has room for improvement. One such improvement is that every time the 
 * Records the number of times a user has entered a queue (or disallows viewers from re-entering)
 * Runs on your machine so that you don't have to depend on someone's website
 
+### Commands
+* !queue - (arguments are customizable) - adds a viewer to the queue if the viewer is eligible for queueing
+
 ## Getting Started/Download
 
-If you want to use the bot, you can download the latest version on [MediaFire](http://www.mediafire.com/file/pwh9m2g4d0rdqan/queue-bot-1.0.0.jar). Simply double click the .jar file, follow the instructions, and you're good to go.
+### Setting up the bot for your Twitch channel
 
+Download the latest build of the bot on [MediaFire](http://www.mediafire.com/file/acck4txf6iofr06/queue-bot-1.0.1.jar) and double click to run. You can follow the instructions in the Welcome tab or follow the below guide.
+
+#### Step 1 - Register an Application
+Go to https://dev.twitch.tv/ and sign into your streaming account. Go to `My Applications` and and click `Register Your Application`. You'll see three fields you need to fill: `Name`, `OAuth Redirect URI`, and `Application Category`.
+
+* Set `Name` to whatever you want.
+* Set `OAuth Redirect URI` to http://127.0.0.1:7090/oauth_authorize_twitch
+* Set `Application Category` to Application Integration via the drop down menu
+
+Click `Register`. Generate a new Client Secret. Grab the ``Client Secret`` and ``Client ID`` and put it in the appropriate fields in the Manual Configuration tab in the application.
+
+#### Step 2 - Create Your Bot's Twitch Account
+Create a new Twitch account for your bot to use. Go to https://twitchapps.com/tmi/ and sign in with this new account. Click `Connect with Twitch`. Grab the `OAuth Token` and put it in the appropriate field in the Manual Configuration tab in the application.
+
+From here you can finish filling out the rest of the configuration.
+
+#### Step 3 (Optional) - Export Your Configuration
+Unless you want to fill out these fields every time you start the bot, click the `Export to File` button and save a configuration file. In the future when you want to use this bot, you can go to the Load Configuration File tab, load the file, and get started in 3 clicks.
+
+*NOTE: If you fail to grant the bot permissions to look at your channel's subscription data or you are not partnered, subscriber features will not work.*
+
+### Cloning the Project
 If you want to develop your version of this bot, just download the repository and set it up as a Maven project.
 
 ### Prerequisites
@@ -38,22 +61,18 @@ If you are trying to use the bot, make sure to have Java 8 or 9 installed on you
 
 Same goes for developers. I'd also recommend having Scene Builder set up and installed.
 
-## Releases
-
-Whenever I create new versions, I will upload the download link.
-
 ## Built With
 
 * [Scene Builder 2](http://www.oracle.com/technetwork/java/javafxscenebuilder-1x-archive-2199384.html) - GUI creation (with the  e(fx)clipse plugin)
 * [Maven](https://maven.apache.org/) - Dependency Management
  
  ## Dependencies
- * Ini4J
- * Twitch4J
+ * [Ini4J](ini4j.sourceforge.net)
+ * [Twitch4J](https://github.com/twitch4j/twitch4j)
 
 ## Authors
 
-* **Benjamin Churchill** - *Everything* - [SirSkaro](https://github.com/SirSkaro)
+* **Benjamin Churchill** - [SirSkaro](https://github.com/SirSkaro)
 
 ## License
 
@@ -61,4 +80,4 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE
 
 ## Acknowledgments
 
-* Thanks to [PokeaimMD](https://www.youtube.com/user/pokeaimMD), for whom this bot was originally built. Happy belated birthday!
+Thanks to [PokeaimMD](https://www.youtube.com/user/pokeaimMD), for whom this bot was originally built. Happy belated birthday!
