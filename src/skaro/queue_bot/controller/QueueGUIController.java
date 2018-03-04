@@ -3,6 +3,7 @@ package skaro.queue_bot.controller;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -211,8 +212,29 @@ public class QueueGUIController
     	queueCapOption.getSelectionModel().select(String.valueOf(state.getQueueCap()));
     	
     	//Connect to Twitch
-    	TwitchService.initialize(config, state);
-    	service = TwitchService.getInstance().get();
+    	//TwitchService.initialize(config, state);
+    	//service = TwitchService.getInstance().get();
+    	
+    	//DELETE BEYOND THIS
+    	QueueEntry entry1 = new QueueEntry("user1", false, null, null, null);
+    	try { TimeUnit.MILLISECONDS.sleep(1); } 
+		catch (InterruptedException e) { System.err.println("RIP"); }
+    	
+    	QueueEntry entry2 = new QueueEntry("user2", true, null, null, null);
+    	try { TimeUnit.MILLISECONDS.sleep(1); } 
+		catch (InterruptedException e) { System.err.println("RIP"); }
+    	
+    	QueueEntry entry3 = new QueueEntry("user3", true, null, null, null);
+    	try { TimeUnit.MILLISECONDS.sleep(1); } 
+		catch (InterruptedException e) { System.err.println("RIP"); }
+    	
+    	QueueEntry entry4 = new QueueEntry("user4", false, null, null, null);
+    	
+    	state.setQueueClosed(false);
+    	state.addToQueue(entry1);
+    	state.addToQueue(entry2);
+    	state.addToQueue(entry3);
+    	state.addToQueue(entry4);
     }
     
     public SessionState getState() { return state; }

@@ -14,6 +14,7 @@ public class QueueEntry
 	private final String requester;
 	private final boolean isSub;
 	private final Optional<String> kwarg1, kwarg2, comment;
+	private final long creationTime;
 	
 	public QueueEntry(String requester, boolean isSub, String arg1, String arg2, String comment)
 	{	
@@ -22,6 +23,9 @@ public class QueueEntry
 		this.kwarg1 = Optional.ofNullable(arg1);
 		this.kwarg2 = Optional.ofNullable(arg2);
 		this.comment = Optional.ofNullable(comment);
+		
+		this.creationTime = System.currentTimeMillis();
+		System.out.println(creationTime);
 	}
 	
 	/********* Getters *********/
@@ -30,6 +34,8 @@ public class QueueEntry
 	public Optional<String> getKWArg1() { return this.kwarg1; }
 	public Optional<String> getKWArg2() { return this.kwarg2; }
 	public Optional<String> getComment() { return this.comment; }
+	public long getCreationTime() { return this.creationTime; }
+	
 	
 	/********* Public Methods *********/
 	@Override
@@ -40,7 +46,7 @@ public class QueueEntry
 		
 		QueueEntry obj = QueueEntry.class.cast(o);
 		
-		return this.requester.equals(obj.requester);	//Assumes all Twitch user names are unique
+		return this.requester.equals(obj.requester);	//Assumes all Twitch user names are unique (which is currently true)
 	}
 	
 	@Override

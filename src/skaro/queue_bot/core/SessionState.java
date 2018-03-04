@@ -198,12 +198,11 @@ public class SessionState
 					nonSubData.setYValue(nonSubData.getYValue().intValue() + 1);
 				
 				createNotification(currEntry.get() + " has been added to History");
-				
 				currEntry = Optional.empty();
 				updateProgressPercent();
 			}
 			
-			if(subsHavePriority())
+			if(subPriority.get())
 			{
 				toPoll = requestPriorityQueue;
 				toSync = requestQueue;
@@ -238,9 +237,11 @@ public class SessionState
 		{
 			if(eligibleForQueuing(qe))
 			{	
+				//Add the request to the queue at the appropriate index
 				requestQueue.add(qe);
 				requestPriorityQueue.add(qe);
-				queueList.add(qe);
+				queueList.add(indexOfEntry(qe), qe);
+				
 				updateProgressPercent();
 				createNotification(qe + ": queue request accepted");
 				return (subPriority.get() && qe.isSub() ? "queued with priority" : "added to the end of the queue");
@@ -325,5 +326,27 @@ public class SessionState
 		
 		progressPercent.set(numerator/denominator);
 		progressPercentFraction.set(String.valueOf((int)numerator)+"/"+String.valueOf((int)denominator));
+	}
+	
+	private int indexOfEntry(QueueEntry qe)
+	{
+		Iterator<QueueEntry> itr;
+		int currIndex = -1;
+		
+		if(subPriority.get())
+			itr = requestPriorityQueue.iterator();
+		else
+			itr = requestQueue.iterator();
+		
+		while(itr.hasNext())
+		{
+			QueueEntry entry = itr.next();
+			currIndex++;
+			
+			if(qe.equals(entry))
+				return currIndex;
+		}
+		
+		return -1;
 	}
 }

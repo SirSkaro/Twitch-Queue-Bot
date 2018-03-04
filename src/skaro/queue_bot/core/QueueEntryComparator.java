@@ -5,15 +5,30 @@ import java.util.Comparator;
 public class QueueEntryComparator implements Comparator<QueueEntry> 
 {
 	@Override
-	public int compare(QueueEntry arg0, QueueEntry arg1) 
+	/*
+	 * If two entries have the same priority, return 0 (which should never happen)
+	 * If entry1 has more priority than entry2, return -1
+	 * If entry2 has more priority than entry1, return 1
+	 * 
+	 * If both entries have the same subscription status, then the entry with the smallest timestamp gets priority.
+	 * Assumes that no two entries can have the same time stamp.
+	 */
+	public int compare(QueueEntry entry1, QueueEntry entry2) 
 	{
-		if(arg0.isSub() && arg1.isSub())	//Equal priority
-			return 0;
-		
-		else if(!arg0.isSub() && arg1.isSub())	//First argument has less priority (arg0 is not a sub, arg1 is a sub)
+		if(entry1.isSub() == entry2.isSub())	//Equal subscriber priority
+		{
+			if(entry1.getCreationTime() == entry2.getCreationTime())
+				System.out.println("Wow");
+			
+			if(entry1.getCreationTime() < entry2.getCreationTime())
+				return -1;
 			return 1;
+		}
 		
-		return -1;	//First argument has more priority (arg0 is a sub, arg1 is not a sub)
+		else if(entry1.isSub() && !entry2.isSub())
+			return -1;
+		
+		return 1;	
 	}
 
 }

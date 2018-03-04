@@ -2,6 +2,7 @@ package skaro.queue_bot.twitch_tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +17,9 @@ public class QueueCommand extends Command
     private SessionState state;
     private TwitchService service;
     private ArgumentsCase argCase;
+    
+    //A key object to insure that all queue entries created have a unique time stamp
+    private static final Object timestampKey = new Object();
     
     public QueueCommand(char prefix, SessionState state, TwitchService service) 
     {
@@ -52,23 +56,40 @@ public class QueueCommand extends Command
         String channelName = event.getChannel().getName();
         boolean isSub = service.isSubscriber(event.getUser());
         
+        //Check for valid input
         if(!isValidInput(arguments))
         {
         	sendMessageToChannel(channelName, "@"+event.getUser().getName()+" invalid input. Usage: "+this.getUsageExample());
         	return;
         }
         
+        //Create the queue entry
         List<String> argList = inputToList(arguments);
-        QueueEntry entry = new QueueEntry(entrantName, isSub, argList.get(0), argList.get(1), argList.get(2));
-        String response = state.addToQueue(entry);
-        response = "@"+event.getUser().getName() +" "+ response;
+        QueueEntry entry = createEntryWithUniqueTimestamp(entrantName, isSub, argList);
+        
+        //Attempt to queue the entry and build response
+        StringBuilder response = new StringBuilder();
+        response.append("@"+event.getUser().getName() +" ");
+        response.append(state.addToQueue(entry));
         
         // Send Response
-        sendMessageToChannel(channelName, response);
-        
-        for(String s : argList)
-        	System.out.println(s);
-        System.out.println("is subscriber: " +isSub);
+        sendMessageToChannel(channelName, response.toString());
+    }
+    
+    private QueueEntry createEntryWithUniqueTimestamp(String name, boolean isSub, List<String> args)
+    {
+    	QueueEntry result;
+    	
+    	synchronized(timestampKey)
+    	{
+    		result = new QueueEntry(name, isSub, args.get(0), args.get(1), args.get(2));
+    		
+    		//Wait a millisecond to insure no other queue entries have the same time stamp
+			try { TimeUnit.MILLISECONDS.sleep(1); } 
+			catch (InterruptedException e) { System.err.println("[WARNING] UNABLE TO SLEEP. CAN'T GUARANTE QUEUE ORDER IF PRIORITY IS ENABLED."); }
+    	}
+    	
+    	return result;
     }
     
     private boolean isValidInput(String input)
