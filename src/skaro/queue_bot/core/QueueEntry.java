@@ -1,5 +1,6 @@
 package skaro.queue_bot.core;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -14,7 +15,7 @@ public class QueueEntry
 	private final String requester;
 	private final boolean isSub;
 	private final Optional<String> kwarg1, kwarg2, comment;
-	private final long creationTime;
+	private final Date creationTime;
 	
 	public QueueEntry(String requester, boolean isSub, String arg1, String arg2, String comment)
 	{	
@@ -24,8 +25,7 @@ public class QueueEntry
 		this.kwarg2 = Optional.ofNullable(arg2);
 		this.comment = Optional.ofNullable(comment);
 		
-		this.creationTime = System.currentTimeMillis();
-		System.out.println(creationTime);
+		this.creationTime = new Date();
 	}
 	
 	/********* Getters *********/
@@ -34,7 +34,7 @@ public class QueueEntry
 	public Optional<String> getKWArg1() { return this.kwarg1; }
 	public Optional<String> getKWArg2() { return this.kwarg2; }
 	public Optional<String> getComment() { return this.comment; }
-	public long getCreationTime() { return this.creationTime; }
+	public Date getCreationTime() { return this.creationTime; }
 	
 	
 	/********* Public Methods *********/

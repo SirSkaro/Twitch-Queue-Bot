@@ -2,7 +2,6 @@ package skaro.queue_bot.twitch_tools;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,9 +16,6 @@ public class QueueCommand extends Command
     private SessionState state;
     private TwitchService service;
     private ArgumentsCase argCase;
-    
-    //A key object to insure that all queue entries created have a unique time stamp
-    private static final Object timestampKey = new Object();
     
     public QueueCommand(char prefix, SessionState state, TwitchService service) 
     {
@@ -65,7 +61,7 @@ public class QueueCommand extends Command
         
         //Create the queue entry
         List<String> argList = inputToList(arguments);
-        QueueEntry entry = createEntryWithUniqueTimestamp(entrantName, isSub, argList);
+        QueueEntry entry = createEntry(entrantName, isSub, argList);
         
         //Attempt to queue the entry and build response
         StringBuilder response = new StringBuilder();
@@ -76,19 +72,9 @@ public class QueueCommand extends Command
         sendMessageToChannel(channelName, response.toString());
     }
     
-    private QueueEntry createEntryWithUniqueTimestamp(String name, boolean isSub, List<String> args)
+    private QueueEntry createEntry(String name, boolean isSub, List<String> args)
     {
-    	QueueEntry result;
-    	
-    	synchronized(timestampKey)
-    	{
-    		result = new QueueEntry(name, isSub, args.get(0), args.get(1), args.get(2));
-    		
-    		//Wait a millisecond to insure no other queue entries have the same time stamp
-			try { TimeUnit.MILLISECONDS.sleep(1); } 
-			catch (InterruptedException e) { System.err.println("[WARNING] UNABLE TO SLEEP. CAN'T GUARANTE QUEUE ORDER IF PRIORITY IS ENABLED."); }
-    	}
-    	
+    	QueueEntry result = new QueueEntry(name, isSub, args.get(0), args.get(1), args.get(2));
     	return result;
     }
     

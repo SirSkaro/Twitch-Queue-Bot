@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Optional;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,10 +29,12 @@ import javafx.scene.chart.XYChart.Series;
  * @author Benjamin Churchill
  *
  */
+@SuppressWarnings("unchecked")
 public class SessionState 
 {
 	private Queue<QueueEntry> requestQueue;
-	private PriorityQueue<QueueEntry> requestPriorityQueue;
+	private OrderedPriorityQueue requestPriorityQueue;
+	
 	private Object queueKey;		//A key used in the synchronized block for either queue
 	private Optional<QueueEntry> currEntry;
 	private ObservableList<QueueEntry> fulfilledRequests, queueList;	//History and current queue order, respectively
@@ -54,7 +55,7 @@ public class SessionState
 	public SessionState()
 	{
 		requestQueue = new LinkedList<QueueEntry>();
-		requestPriorityQueue = new PriorityQueue<QueueEntry>(new QueueEntryComparator());
+		requestPriorityQueue = new OrderedPriorityQueue();
 		queueKey = new Object();	
 		currEntry = Optional.empty();
 		fulfilledRequests = FXCollections.observableArrayList();
