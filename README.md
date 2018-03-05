@@ -25,13 +25,15 @@ Twitch Queue Bot grants the streamer complete control over their chat bot, from 
 * Runs on your machine so that you don't have to depend on someone's website
 
 ### Commands
-* !queue - (arguments are customizable) - adds a viewer to the queue if the viewer is eligible for queueing
+* !queue - arguments are customizable - adds a viewer to the queue if the viewer is eligible for queueing
+* !wait - no arguments - tells the viewer their placing in the queue
+* !drop - no arguments - removes a user from the queue unless they are the current entry
 
 ## Getting Started/Download
 
 ### Setting up the bot for your Twitch channel
 
-Download the latest build of the bot on [MediaFire](http://www.mediafire.com/file/acck4txf6iofr06/queue-bot-1.0.1.jar) and double click to run. You can follow the instructions in the Welcome tab or follow the below guide.
+Download the latest build (v1.0.4) of the bot on [MediaFire](http://www.mediafire.com/file/rs5wdvd36xpzjgg/queue-bot-1.0.4.jar) and double click to run. You can follow the instructions in the Welcome tab or follow the steps below.
 
 #### Step 1 - Register an Application
 Go to https://dev.twitch.tv/ and sign into your streaming account. Go to `My Applications` and and click `Register Your Application`. You'll see three fields you need to fill: `Name`, `OAuth Redirect URI`, and `Application Category`.
