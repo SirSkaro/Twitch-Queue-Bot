@@ -226,17 +226,18 @@ public class SessionState
 		}
 	}
 	
-	public String addToQueue(QueueEntry qe)
+	public QueueEligibility addToQueue(QueueEntry qe)
 	{
 		if(queueClosed.get())
 		{
-			createNotification(qe + ": denied queue request. Queue closed");
-			return "denied: the queue is closed";
+			createNotification(qe + "'s request "+ QueueEligibility.CLOSED);
+			return QueueEligibility.CLOSED;
 		}
 		
 		synchronized(queueKey)
 		{
-			if(eligibleForQueuing(qe))
+			QueueEligibility eligibility = eligibleForQueuing(qe);
+			if(eligibility.isEligible())
 			{	
 				//Add the request to the queue at the appropriate index
 				requestQueue.add(qe);
@@ -244,12 +245,29 @@ public class SessionState
 				queueList.add(indexOfEntry(qe), qe);
 				
 				updateProgressPercent();
-				createNotification(qe + ": queue request accepted");
-				return (subPriority.get() && qe.isSub() ? "queued with priority" : "added to the end of the queue");
+				eligibility = (subPriority.get() && qe.isSub() ? QueueEligibility.ELIGIBLE_PRIORITY : QueueEligibility.ELIGIBLE_NO_PRIORITY);
+				createNotification(qe + "'s request " + eligibility);
+				return eligibility;
 			}
 			
-			createNotification(qe + ": denied queue request");
-			return "queue request rejected";
+			createNotification(qe + "'s request "+eligibility);
+			return eligibility;
+		}
+	}
+	
+	public Boolean removeFromQueue(String user)
+	{
+		QueueEntry tempEntry = new QueueEntry(user);
+		
+		synchronized(queueKey)
+		{
+			if(!queueList.contains(tempEntry))
+				return false;
+			
+			queueList.remove(tempEntry);
+			requestQueue.remove(tempEntry);
+			requestPriorityQueue.remove(tempEntry);
+			return true;
 		}
 	}
 	
@@ -288,22 +306,43 @@ public class SessionState
 		return occurences;
 	}
 	
+	public Optional<Integer> placeInQueue(String user)
+	{
+		QueueEntry tempEntry = new QueueEntry(user);
+		int index = indexOfEntry(tempEntry);
+		
+		if(index == -1)
+			return Optional.empty();
+		return Optional.of(index + 1);
+	}
+	
 	/********* Private Methods *********/
 	/**
 	 * A method to test if a request is eligible for queuing. This method is expected to
 	 * be used inside of a synchronized block, so atomistic behavior is assumed.
 	 * @param qe - the QueueEntry request attempting to be queued
-	 * @return True if the request is eligible for queuing. False otherwise.
+	 * @return A QueueEligibility ENUM describing the entrant's eligibility.
 	 */
-	private boolean eligibleForQueuing(QueueEntry qe)
+	private QueueEligibility eligibleForQueuing(QueueEntry qe)
 	{
 		int cap = queueCap.get();
-		boolean isCurrEntry = (currEntry.isPresent() && currEntry.get().equals(qe));
 		
-		return (cap == -1 || requestQueue.size() < cap)		//Assert that the queue is below its capped size
-					&& (!queueList.contains(qe) && !isCurrEntry)	//Assert the QueueEntry isn't in the queue or the current entry
-					&& (allowReentry.get() ? true : !fulfilledRequests.contains(qe))	//Assert that the QueueEntry isn't a re-entry if they are not allowed
-					&& (subOnly.get() ? qe.isSub() : true);	//Assert that the QueueEntry requester is a sub if Sub-Only mode is enabled
+		if(cap != -1 && requestQueue.size() >= cap)					//Assert that the queue is below its capped size
+			return QueueEligibility.FULL;
+			
+		if(queueList.contains(qe))									//Assert the QueueEntry isn't in the queue 
+			return QueueEligibility.IN_QUEUE;
+		
+		if(currEntry.isPresent() && currEntry.get().equals(qe)) 	//Assert the QueueEntry isn't the current entry
+			return QueueEligibility.CURRENT;
+			
+		if(!allowReentry.get() && fulfilledRequests.contains(qe))	//Assert that the QueueEntry isn't a re-entry if they are not allowed
+			return QueueEligibility.NO_REENTRY;
+			
+		if(subOnly.get() && !qe.isSub())							//Assert that the QueueEntry requester is a sub if Sub-Only mode is enabled
+			return QueueEligibility.SUB_ONLY;
+		
+		return QueueEligibility.ELIGIBLE;
 	}
 	
 	private void createNotification(String event)

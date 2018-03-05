@@ -36,7 +36,7 @@ public class QueueCommand extends Command
 	        setCommand("queue");
         }
         
-        setCommandAliases(new String[]{"join", "battle"});
+        setCommandAliases(new String[]{"join", "request"});
         setCategory("request");
         setDescription("Request to join the queue!");
         getRequiredPermissions().add(CommandPermission.EVERYONE);
@@ -67,6 +67,7 @@ public class QueueCommand extends Command
         StringBuilder response = new StringBuilder();
         response.append("@"+event.getUser().getName() +" ");
         response.append(state.addToQueue(entry));
+        response.append("!");
         
         // Send Response
         sendMessageToChannel(channelName, response.toString());

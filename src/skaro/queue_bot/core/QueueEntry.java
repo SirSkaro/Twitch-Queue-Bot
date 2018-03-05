@@ -28,6 +28,21 @@ public class QueueEntry
 		this.creationTime = new Date();
 	}
 	
+	/**
+	 * A constructor to make a bare instance. Meant for temporary instances used for the {@link QueueEntry#equals(Object)} method.
+	 * @param requester
+	 */
+	public QueueEntry(String requester)
+	{
+		this.requester = requester;
+		this.isSub = false;
+		this.kwarg1 = Optional.empty();
+		this.kwarg2 = Optional.empty();
+		this.comment = Optional.empty();
+		
+		this.creationTime = null;
+	}
+	
 	/********* Getters *********/
 	public String getRequester( ) { return this.requester; }
 	public boolean isSub() { return this.isSub; }
