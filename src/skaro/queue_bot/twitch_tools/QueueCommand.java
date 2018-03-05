@@ -6,12 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.philippheuer.twitch4j.events.event.irc.ChannelMessageEvent;
-import me.philippheuer.twitch4j.message.commands.Command;
 import me.philippheuer.twitch4j.message.commands.CommandPermission;
 import skaro.queue_bot.core.QueueEntry;
 import skaro.queue_bot.core.SessionState;
 
-public class QueueCommand extends Command 
+public class QueueCommand extends FXQueueableCommand 
 {
     private SessionState state;
     private TwitchService service;
@@ -42,36 +41,42 @@ public class QueueCommand extends Command
         getRequiredPermissions().add(CommandPermission.EVERYONE);
         setUsageExample(constructExample(prefix));
     }
-
+    
     @Override
-    public void executeCommand(ChannelMessageEvent event) 
+	protected void createExecution(ChannelMessageEvent event) 
     {
-        super.executeCommand(event);
-        String arguments = this.getParsedContent().trim();
-        String entrantName = event.getUser().getName();
-        String channelName = event.getChannel().getName();
-        boolean isSub = service.isSubscriber(event.getUser());
-        
-        //Check for valid input
-        if(!isValidInput(arguments))
+    	execution = new Runnable() 
         {
-        	sendMessageToChannel(channelName, "@"+event.getUser().getName()+" invalid input. Usage: "+this.getUsageExample());
-        	return;
-        }
-        
-        //Create the queue entry
-        List<String> argList = inputToList(arguments);
-        QueueEntry entry = createEntry(entrantName, isSub, argList);
-        
-        //Attempt to queue the entry and build response
-        StringBuilder response = new StringBuilder();
-        response.append("@"+event.getUser().getName() +" ");
-        response.append(state.addToQueue(entry));
-        response.append("!");
-        
-        // Send Response
-        sendMessageToChannel(channelName, response.toString());
-    }
+            @Override
+            public void run() 
+            {
+            	String arguments = getParsedContent().trim();
+                String entrantName = event.getUser().getName();
+                String channelName = event.getChannel().getName();
+                boolean isSub = service.isSubscriber(event.getUser());
+                
+                //Check for valid input
+                if(!isValidInput(arguments))
+                {
+                	sendMessageToChannel(channelName, "@"+event.getUser().getName()+" invalid input. Usage: "+getUsageExample());
+                	return;
+                }
+                
+                //Create the queue entry
+                List<String> argList = inputToList(arguments);
+                QueueEntry entry = createEntry(entrantName, isSub, argList);
+                
+                //Attempt to queue the entry and build response
+                StringBuilder response = new StringBuilder();
+                response.append("@"+event.getUser().getName() +" ");
+                response.append(state.addToQueue(entry));
+                response.append("!");
+                
+                // Send Response
+                sendMessageToChannel(channelName, response.toString());
+            }
+        };
+	}
     
     private QueueEntry createEntry(String name, boolean isSub, List<String> args)
     {

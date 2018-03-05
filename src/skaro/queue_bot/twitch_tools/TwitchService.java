@@ -92,8 +92,11 @@ public class TwitchService
     {
     	QueueCommand queueCommand = new QueueCommand(config.getPrefix(), state, this);
 		WaitCommand waitCommand = new WaitCommand(config.getPrefix(), state); 
+		DropCommand dropCommand = new DropCommand(config.getPrefix(), state);
+		
 		twitchClient.getCommandHandler().registerCommand(queueCommand);
 		twitchClient.getCommandHandler().registerCommand(waitCommand);
+		twitchClient.getCommandHandler().registerCommand(dropCommand);
 		twitchClient.getDispatcher().registerListener(this);
 		channelEndpoint.registerEventListener();
     }
