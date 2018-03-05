@@ -1,5 +1,6 @@
 package skaro.queue_bot.core;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -14,6 +15,7 @@ public class QueueEntry
 	private final String requester;
 	private final boolean isSub;
 	private final Optional<String> kwarg1, kwarg2, comment;
+	private final Date creationTime;
 	
 	public QueueEntry(String requester, boolean isSub, String arg1, String arg2, String comment)
 	{	
@@ -22,6 +24,23 @@ public class QueueEntry
 		this.kwarg1 = Optional.ofNullable(arg1);
 		this.kwarg2 = Optional.ofNullable(arg2);
 		this.comment = Optional.ofNullable(comment);
+		
+		this.creationTime = new Date();
+	}
+	
+	/**
+	 * A constructor to make a bare instance. Meant for temporary instances used for the {@link QueueEntry#equals(Object)} method.
+	 * @param requester
+	 */
+	public QueueEntry(String requester)
+	{
+		this.requester = requester;
+		this.isSub = false;
+		this.kwarg1 = Optional.empty();
+		this.kwarg2 = Optional.empty();
+		this.comment = Optional.empty();
+		
+		this.creationTime = null;
 	}
 	
 	/********* Getters *********/
@@ -30,6 +49,8 @@ public class QueueEntry
 	public Optional<String> getKWArg1() { return this.kwarg1; }
 	public Optional<String> getKWArg2() { return this.kwarg2; }
 	public Optional<String> getComment() { return this.comment; }
+	public Date getCreationTime() { return this.creationTime; }
+	
 	
 	/********* Public Methods *********/
 	@Override
@@ -40,7 +61,7 @@ public class QueueEntry
 		
 		QueueEntry obj = QueueEntry.class.cast(o);
 		
-		return this.requester.equals(obj.requester);	//Assumes all Twitch user names are unique
+		return this.requester.equals(obj.requester);	//Assumes all Twitch user names are unique (which is currently true)
 	}
 	
 	@Override

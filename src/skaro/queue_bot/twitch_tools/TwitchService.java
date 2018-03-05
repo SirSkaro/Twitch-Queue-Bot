@@ -26,17 +26,14 @@ public class TwitchService
 				.withClientId(config.getClientID().get())
 				.withClientSecret(config.getClientSecret().get())
 				.withAutoSaveConfiguration(false)
-				.withCredential(config.getOauth().get()) // Get your token at: https://twitchapps.com/tmi/
+				.withCredential(config.getOauth().get())
 				.connect();
 		
 		//Get channel data
 		channelEndpoint = twitchClient.getChannelEndpoint(config.getChannel().get());
 		
 		//Connect to chat and register commands/listeners
-		QueueCommand command = new QueueCommand(config.getPrefix(), state, this);
-		twitchClient.getCommandHandler().registerCommand(command);
-		twitchClient.getDispatcher().registerListener(this);
-		channelEndpoint.registerEventListener();
+		registerCommands(config, state);
 		
 		//Check if application has permission to check for subscribers
 		Optional<OAuthCredential> credentialCheck = twitchClient.getCredentialManager().getTwitchCredentialsForChannel(channelEndpoint.getChannelId());
@@ -89,5 +86,18 @@ public class TwitchService
     public void onChannelMessage(ChannelMessageEvent event) 
     {
         System.out.println("Channel [" +event.getChannel().getDisplayName() + "] - User[" + event.getUser().getDisplayName() + "] - Message [" + event.getMessage() + "]");
+    }
+    
+    private void registerCommands(ConfigurationState config, SessionState state)
+    {
+    	QueueCommand queueCommand = new QueueCommand(config.getPrefix(), state, this);
+		WaitCommand waitCommand = new WaitCommand(config.getPrefix(), state); 
+		DropCommand dropCommand = new DropCommand(config.getPrefix(), state);
+		
+		twitchClient.getCommandHandler().registerCommand(queueCommand);
+		twitchClient.getCommandHandler().registerCommand(waitCommand);
+		twitchClient.getCommandHandler().registerCommand(dropCommand);
+		twitchClient.getDispatcher().registerListener(this);
+		channelEndpoint.registerEventListener();
     }
 }

@@ -11,7 +11,8 @@ import skaro.queue_bot.twitch_tools.TwitchService;
 
 public class App extends Application 
 {
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
     
