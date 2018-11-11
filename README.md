@@ -78,7 +78,7 @@ Same goes for developers. I'd also recommend having Scene Builder set up and ins
 
 ## License
 
-This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE.md](LICENSE.md) file for details. tl;dr, if you're going to make your own queue Twitch bot based on this one, also use this lisence. Also, you can't copy this code then sell "your" bot. 
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE.md](LICENSE.md) file for details. tl;dr, if you're going to make your own queue Twitch bot based on this one, also use this license. Also, you can't copy this code then sell "your" bot. 
 
 ## Acknowledgments
 
